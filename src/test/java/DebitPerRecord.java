@@ -1,10 +1,10 @@
-public class DebitRecordClass {
+public class DebitPerRecord {
  String[] debitRecord;
     String type;
     String depositNumber;
     Integer amount;
 
-    public DebitRecordClass(String[] debitRecord) {
+    public DebitPerRecord(String[] debitRecord) {
         this.debitRecord = debitRecord;
         this.type = debitRecord[0];
         this.depositNumber = debitRecord[1];
