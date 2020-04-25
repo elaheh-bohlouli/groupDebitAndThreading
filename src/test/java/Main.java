@@ -45,8 +45,6 @@ public class Main {
             System.out.println("debit and credit amounts is not equal!");
         }else {
             new Thread(new Runnable(){
-                DebitRecordClass debtor = null;
-
                 @Override
                 public void run(){
             for (DebitRecordClass debitRecordClass : debitRecordClassList) {
