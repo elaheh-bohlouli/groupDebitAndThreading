@@ -11,6 +11,7 @@ public class Operation {
     private int numberOfCreditorRecord;
     private int numberOfRecordPerThread;
     private int numberOfAliveThread;
+    Map<String, BalancePerRecord> balanceMap = prepareBalanceMap();
 
     public Operation(String PRE_PATH, String balanceFilePath, String transactionFilePath, String debitFilePath,
                      int numberOfCreditorRecord, int numberOfRecordPerThread, int numberOfAliveThread) {
@@ -22,7 +23,6 @@ public class Operation {
         this.numberOfRecordPerThread = numberOfRecordPerThread;
         this.numberOfAliveThread = numberOfAliveThread;
     }
-
 
     protected void createDebitFile(String debtorRecord, String baseCreditorNumber, String amount) {
         List<String> debitFile = new ArrayList<>();
@@ -78,35 +78,31 @@ public class Operation {
         }
         if (creditSumAmount != debtorAmount) {
             System.out.println("debit and credit amounts is not equal!");
-        } else doTransactionOperation();
+        } else doTransactionOperationOnFiles();
     }
 
     private void doTransactionOperationOnFiles() {
         List<DebitPerRecord> listDebitPerRecord = new ArrayList<>();
         List<String> list = UtilFileOperation.readFromFile(Paths.get(debitFilePath));
+        String debtorDepositNumber = null;
         for (String s : list) {
             DebitPerRecord debitPerRecord = new DebitPerRecord(UtilFileOperation.splitLine(s));
             listDebitPerRecord.add(debitPerRecord);
-            if (debitPerRecord.type.equalsIgnoreCase("creditor")) {
+            if (debitPerRecord.type.equals("debtor")) {
+                debtorDepositNumber = debitPerRecord.depositNumber;
+            }else if (debitPerRecord.type.equals("creditor")) {
+                String creditorDepositNumber = debitPerRecord.depositNumber;
                 TransactionFileCreation transaction = new TransactionFileCreation(debtorDepositNumber,
                         creditorDepositNumber, debitPerRecord.amount);
                 transaction.doTransaction(transactionFilePath);
-        }
 
-                String debtorDepositNumber = debtor.depositNumber;
-                String creditorDepositNumber = debitPerRecord.depositNumber;
-                if (debitPerRecord.type.equalsIgnoreCase("creditor")) {
-                    TransactionFileCreation transaction = new TransactionFileCreation(debtorDepositNumber, creditorDepositNumber, debitPerRecord.amount);
-                    transaction.doTransaction(transactionFilePath);
                     balanceMap.get(debtorDepositNumber).balance -= debitPerRecord.amount;
                     balanceMap.get(creditorDepositNumber).balance += debitPerRecord.amount;
                     UtilFileOperation.replaceInFile(balanceFilePath, debtorDepositNumber, UtilFileOperation
                             .join(Arrays.asList(debtorDepositNumber, String.valueOf(balanceMap.get(debtorDepositNumber).balance))));
                     UtilFileOperation.replaceInFile(balanceFilePath, creditorDepositNumber, UtilFileOperation
                             .join(Arrays.asList(creditorDepositNumber, String.valueOf(balanceMap.get(creditorDepositNumber).balance))));
-
                 } else System.out.println("All deposits are done");
             }
         }
-    }
 }
