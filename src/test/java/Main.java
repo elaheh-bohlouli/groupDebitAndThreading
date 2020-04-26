@@ -24,11 +24,12 @@ public class Main {
 
         operation.createBalanceFile("1.10.100.10   200", "1.20.100.", "   0");
         operation.createDebitFile("debtor   1.10.100.1   200", "1.20.100.", "5");
+        operation.debitAndCreditAmountCalculate();
         int numberOfThread = operation.numberOfThreadCalculate();
-        System.out.println(numberOfThread);
 
-        for (int i = 0; i < 2; i++) {
-            DebitProcessorThread debitProcessorThread = new DebitProcessorThread();
+
+        for (int i = 0; i < numberOfThread; i++) {
+            /*DebitProcessorThread debitProcessorThread = new DebitProcessorThread();*/
         }
     }
 }

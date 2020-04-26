@@ -47,7 +47,10 @@ public class Operation {
     }
 
     protected Map<String, BalancePerRecord> prepareBalanceMap() {
-        List<String> balanceRecord = UtilFileOperation.readFromFile(Paths.get(balanceFilePath));
+        List<String> balanceRecord = null;
+        if (balanceFilePath != null) {
+            balanceRecord = UtilFileOperation.readFromFile(Paths.get(balanceFilePath));
+        }        System.out.println("There Is Not File Exist");
         List<BalancePerRecord> balancePerRecordList = new ArrayList<>();
         Map<String, BalancePerRecord> balanceMap = new HashMap<>();
         for (String perBalanceRecord : balanceRecord) {
@@ -82,7 +85,7 @@ public class Operation {
         } else doTransactionOperationOnFiles();
     }
 
-    private void doTransactionOperationOnFiles() {
+    protected void doTransactionOperationOnFiles() {
         synchronized (lock) {
             List<DebitPerRecord> listDebitPerRecord = new ArrayList<>();
             List<String> list = UtilFileOperation.readFromFile(Paths.get(debitFilePath));
