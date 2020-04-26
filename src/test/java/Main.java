@@ -10,7 +10,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Operation operation = new Operation("F:\\New folder", "F:\\New folder\\BalanceFile.txt",
+        Operation operation;
+        operation = new Operation("F:\\New folder", "F:\\New folder\\BalanceFile.txt",
                 "F:\\New folder\\TransactionFile.txt", "F:\\New folder\\DebitFile.txt",
                 100, 5, 10);
 
@@ -25,6 +26,7 @@ public class Main {
             DebitPerRecord debitPerRecord = new DebitPerRecord(UtilFileOperation.splitLine(s));
             listDebitPerRecord.add(debitPerRecord);
             List<List<DebitPerRecord>> smallerLists = partition(listDebitPerRecord, 5);
+
             for (int i = 0; i < numberOfThread; i++) {
                 DebitProcessorThread debitProcessorThread = new DebitProcessorThread(smallerLists);
                 debitProcessorThread.start();
