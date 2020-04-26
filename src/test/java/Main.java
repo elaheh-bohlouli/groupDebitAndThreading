@@ -6,16 +6,6 @@ import static com.google.common.collect.Lists.partition;
 
 public class Main {
 
-    private static String PRE_PATH = "F:\\New folder";
-    private static String balanceFilePath;
-    private static String transactionFilePath;
-    private static String debitFilePath;
-    private static int numberOfCreditorRecord = 100;
-    private static int numberOfRecordPerThread = 5;
-    private static int numberOfAliveThread = 10;
-    static Object lock = new Object();
-
-
     public static void main(String[] args) {
 
         Operation operation = new Operation("F:\\New folder", "F:\\New folder\\BalanceFile.txt",
@@ -27,9 +17,8 @@ public class Main {
         operation.debitAndCreditAmountCalculate();
         int numberOfThread = operation.numberOfThreadCalculate();
 
-
-        for (int i = 0; i < numberOfThread; i++) {
-            /*DebitProcessorThread debitProcessorThread = new DebitProcessorThread();*/
+        for (int i=0; i<numberOfThread; i++){
+            DebitProcessorThread debitProcessorThread = new DebitProcessorThread()
         }
     }
 }

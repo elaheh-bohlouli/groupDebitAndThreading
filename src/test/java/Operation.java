@@ -69,11 +69,13 @@ public class Operation {
     }
 
     protected void debitAndCreditAmountCalculate() {
+        List<DebitPerRecord> listDebitPerRecord = new ArrayList<>();
         List<String> list = UtilFileOperation.readFromFile(Paths.get(debitFilePath));
         int creditSumAmount = 0;
         int debtorAmount = 0;
         for (String s : list) {
             DebitPerRecord debitPerRecord = new DebitPerRecord(UtilFileOperation.splitLine(s));
+            listDebitPerRecord.add(debitPerRecord);
             if (debitPerRecord.type.equals("debtor")) {
                 debtorAmount = debitPerRecord.amount;
             } else {
@@ -82,12 +84,11 @@ public class Operation {
         }
         if (creditSumAmount != debtorAmount) {
             System.out.println("debit and credit amounts is not equal!");
-        } else doTransactionOperationOnFiles();
+        } else doTransactionOperationOnFiles(listDebitPerRecord);
     }
 
-    protected void doTransactionOperationOnFiles() {
+    protected void doTransactionOperationOnFiles(List<DebitPerRecord> listDebitPerRecord) {
         synchronized (lock) {
-            List<DebitPerRecord> listDebitPerRecord = new ArrayList<>();
             List<String> list = UtilFileOperation.readFromFile(Paths.get(debitFilePath));
             String debtorDepositNumber = null;
             for (String s : list) {
