@@ -24,12 +24,6 @@ public class Main {
         List<String> list = UtilFileOperation.readFromFile(Paths.get("F:\\New folder\\DebitFile.txt"));
 
 
-            int count = 10;
-            while (true){
-                List<DebitProcessorThread> list1 = new ArrayList<>();
-                for livethread
-            }
-
         for (String s : list) {
             DebitPerRecord debitPerRecord = new DebitPerRecord(UtilFileOperation.splitLine(s));
             listDebitPerRecord.add(debitPerRecord);
@@ -39,10 +33,17 @@ public class Main {
                 DebitProcessorThread debitProcessorThread = new DebitProcessorThread(smallerLists);
                 debitProcessorThread.start();
 
-                try {
-                    debitProcessorThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                int count = 10;
+                while (true) {
+                    List<DebitProcessorThread> list1 = new ArrayList<>();
+                    list1.add(debitProcessorThread);
+                    if (list1.size() < count)
+
+                        try {
+                            debitProcessorThread.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                 }
             }
         }
