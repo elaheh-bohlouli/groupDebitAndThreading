@@ -11,8 +11,10 @@ public class DebitProcessorThread extends Thread {
 
     @Override
     public void run() {
-        Operation operation = new Operation();
+        Operation operation = new Operation("F:\\New folder", "F:\\New folder\\BalanceFile.txt",
+                "F:\\New folder\\TransactionFile.txt", "F:\\New folder\\DebitFile.txt",
+                100, 5, 10);
         for (List<DebitPerRecord> debitPerRecord : debitPerRecordList) {
-            operation.doTransactionOperationOnFiles(debitPerRecordList);        }
+            operation.doTransactionOperationOnFiles(debitPerRecord);        }
     }
 }
