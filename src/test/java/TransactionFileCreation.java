@@ -1,15 +1,13 @@
-package files;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Transaction {
+public class TransactionFileCreation {
     private String debtorDepositNumber;
     private String creditorDepositNumber;
     private Integer amount;
 
-    public Transaction(String debtorDepositNumber, String creditorDepositNumber, Integer amount) {
+    public TransactionFileCreation(String debtorDepositNumber, String creditorDepositNumber, Integer amount) {
         this.debtorDepositNumber = debtorDepositNumber;
         this.creditorDepositNumber = creditorDepositNumber;
         this.amount = amount;
