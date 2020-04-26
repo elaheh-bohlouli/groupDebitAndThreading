@@ -12,6 +12,7 @@ public class Operation {
     private int numberOfRecordPerThread;
     private int numberOfAliveThread;
     Map<String, BalancePerRecord> balanceMap = prepareBalanceMap();
+    static Object lock = new Object();
 
     public Operation(String PRE_PATH, String balanceFilePath, String transactionFilePath, String debitFilePath,
                      int numberOfCreditorRecord, int numberOfRecordPerThread, int numberOfAliveThread) {
@@ -82,19 +83,20 @@ public class Operation {
     }
 
     private void doTransactionOperationOnFiles() {
-        List<DebitPerRecord> listDebitPerRecord = new ArrayList<>();
-        List<String> list = UtilFileOperation.readFromFile(Paths.get(debitFilePath));
-        String debtorDepositNumber = null;
-        for (String s : list) {
-            DebitPerRecord debitPerRecord = new DebitPerRecord(UtilFileOperation.splitLine(s));
-            listDebitPerRecord.add(debitPerRecord);
-            if (debitPerRecord.type.equals("debtor")) {
-                debtorDepositNumber = debitPerRecord.depositNumber;
-            }else if (debitPerRecord.type.equals("creditor")) {
-                String creditorDepositNumber = debitPerRecord.depositNumber;
-                TransactionFileCreation transaction = new TransactionFileCreation(debtorDepositNumber,
-                        creditorDepositNumber, debitPerRecord.amount);
-                transaction.doTransaction(transactionFilePath);
+        synchronized (lock) {
+            List<DebitPerRecord> listDebitPerRecord = new ArrayList<>();
+            List<String> list = UtilFileOperation.readFromFile(Paths.get(debitFilePath));
+            String debtorDepositNumber = null;
+            for (String s : list) {
+                DebitPerRecord debitPerRecord = new DebitPerRecord(UtilFileOperation.splitLine(s));
+                listDebitPerRecord.add(debitPerRecord);
+                if (debitPerRecord.type.equals("debtor")) {
+                    debtorDepositNumber = debitPerRecord.depositNumber;
+                } else if (debitPerRecord.type.equals("creditor")) {
+                    String creditorDepositNumber = debitPerRecord.depositNumber;
+                    TransactionFileCreation transaction = new TransactionFileCreation(debtorDepositNumber,
+                            creditorDepositNumber, debitPerRecord.amount);
+                    transaction.doTransaction(transactionFilePath);
 
                     balanceMap.get(debtorDepositNumber).balance -= debitPerRecord.amount;
                     balanceMap.get(creditorDepositNumber).balance += debitPerRecord.amount;
@@ -105,4 +107,5 @@ public class Operation {
                 } else System.out.println("All deposits are done");
             }
         }
+    }
 }
