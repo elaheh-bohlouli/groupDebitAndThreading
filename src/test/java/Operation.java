@@ -81,13 +81,18 @@ public class Operation {
         } else doTransactionOperation();
     }
 
-    private void doTransactionOperation() {
+    private void doTransactionOperationOnFiles() {
         List<DebitPerRecord> listDebitPerRecord = new ArrayList<>();
         List<String> list = UtilFileOperation.readFromFile(Paths.get(debitFilePath));
         for (String s : list) {
             DebitPerRecord debitPerRecord = new DebitPerRecord(UtilFileOperation.splitLine(s));
             listDebitPerRecord.add(debitPerRecord);
+            if (debitPerRecord.type.equalsIgnoreCase("creditor")) {
+                TransactionFileCreation transaction = new TransactionFileCreation(debtorDepositNumber,
+                        creditorDepositNumber, debitPerRecord.amount);
+                transaction.doTransaction(transactionFilePath);
         }
+
                 String debtorDepositNumber = debtor.depositNumber;
                 String creditorDepositNumber = debitPerRecord.depositNumber;
                 if (debitPerRecord.type.equalsIgnoreCase("creditor")) {
