@@ -1,4 +1,6 @@
 
+import com.google.common.collect.Lists;
+
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -17,8 +19,16 @@ public class Main {
         operation.debitAndCreditAmountCalculate();
         int numberOfThread = operation.numberOfThreadCalculate();
 
-        for (int i=0; i<numberOfThread; i++){
-            DebitProcessorThread debitProcessorThread = new DebitProcessorThread()
+        List<DebitPerRecord> listDebitPerRecord = new ArrayList<>();
+        List<String> list = UtilFileOperation.readFromFile(Paths.get("F:\\New folder\\DebitFile.txt"));
+        for (String s : list) {
+            DebitPerRecord debitPerRecord = new DebitPerRecord(UtilFileOperation.splitLine(s));
+            listDebitPerRecord.add(debitPerRecord);
+            List<List<DebitPerRecord>> smallerLists = partition(listDebitPerRecord, 5);
+            for (int i = 0; i < numberOfThread; i++) {
+                DebitProcessorThread debitProcessorThread = new DebitProcessorThread(smallerLists);
+                debitProcessorThread.start();
+            }
         }
     }
 }

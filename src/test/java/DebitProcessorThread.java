@@ -11,8 +11,8 @@ public class DebitProcessorThread extends Thread {
 
     @Override
     public void run() {
+        Operation operation = new Operation();
         for (List<DebitPerRecord> debitPerRecord : debitPerRecordList) {
-            // do transaction
-        }
+            operation.doTransactionOperationOnFiles(debitPerRecordList);        }
     }
 }
