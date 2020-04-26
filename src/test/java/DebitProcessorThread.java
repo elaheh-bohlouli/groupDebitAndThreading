@@ -15,6 +15,7 @@ public class DebitProcessorThread extends Thread {
                 "F:\\New folder\\TransactionFile.txt", "F:\\New folder\\DebitFile.txt",
                 100, 5, 10);
         for (List<DebitPerRecord> debitPerRecord : debitPerRecordList) {
-            operation.doTransactionOperationOnFiles(debitPerRecord);        }
+            operation.doTransactionOperationOnFiles(debitPerRecord);
+        }
     }
 }

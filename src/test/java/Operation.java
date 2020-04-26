@@ -50,7 +50,8 @@ public class Operation {
         List<String> balanceRecord = null;
         if (balanceFilePath != null) {
             balanceRecord = UtilFileOperation.readFromFile(Paths.get(balanceFilePath));
-        }        System.out.println("There Is Not File Exist");
+        }
+        System.out.println("There Is Not File Exist");
         List<BalancePerRecord> balancePerRecordList = new ArrayList<>();
         Map<String, BalancePerRecord> balanceMap = new HashMap<>();
         for (String perBalanceRecord : balanceRecord) {
