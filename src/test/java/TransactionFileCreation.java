@@ -42,6 +42,7 @@ public class TransactionFileCreation {
         list.add(debtorDepositNumber);
         list.add(creditorDepositNumber);
         list.add(String.valueOf(amount));
+        list.add("\n");
         String join = UtilFileOperation.join(list);
         UtilFileOperation.createFile(path);
         UtilFileOperation.AppendToFile(path, join);

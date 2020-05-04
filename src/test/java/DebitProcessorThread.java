@@ -3,19 +3,18 @@ import java.util.List;
 
 public class DebitProcessorThread extends Thread {
 
-    private List<List<DebitPerRecord>> debitPerRecordList = new ArrayList<>();
+    private List<DebitPerRecord> debitPerRecordList = new ArrayList<>();
+    private DebitPerRecord debtorItem;
 
-    public DebitProcessorThread(List<List<DebitPerRecord>> debitPerRecordList) {
+    public DebitProcessorThread(DebitPerRecord debtorItem, List<DebitPerRecord> debitPerRecordList) {
         this.debitPerRecordList = debitPerRecordList;
+        this.debtorItem = debtorItem;
     }
 
     @Override
     public void run() {
-        Operation operation = new Operation("F:\\New folder", "F:\\New folder\\BalanceFile.txt",
-                "F:\\New folder\\TransactionFile.txt", "F:\\New folder\\DebitFile.txt",
-                100, 5, 10);
-        for (List<DebitPerRecord> debitPerRecord : debitPerRecordList) {
-            operation.doTransactionOperationOnFiles(debitPerRecord);
+        for (DebitPerRecord creditorItem : debitPerRecordList) {
+            Main.operation.doTransactionOperationOnFiles(debtorItem, creditorItem);
         }
     }
 }

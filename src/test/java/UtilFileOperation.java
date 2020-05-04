@@ -24,7 +24,7 @@ public final class UtilFileOperation {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("File Not Present! Please Check!");
+            System.out.println("File  Present! Please !");
         }
     }
 
@@ -70,7 +70,7 @@ public final class UtilFileOperation {
         try {
             Path path = Paths.get(filePath);
             Stream<String> lines = Files.lines(path);
-            List<String> replaced = lines.map(line -> depositNumber.contains(depositNumber) ? newLine : line)
+            List<String> replaced = lines.map(line -> line.contains(depositNumber + "\t") ? newLine : line)
                     .collect(Collectors.toList());
             Files.write(path, replaced);
             lines.close();
@@ -82,14 +82,14 @@ public final class UtilFileOperation {
 
 
     public static String[] splitLine(String line) {
-        String[] str = line.split("   ");
+        String[] str = line.split("\t");
         return str;
     }
 
 
     public static String join(List<String> lists) {
 
-        String tab = "   ";
+        String tab = "\t";
 
         String res = lists.stream()
                 .map(Object::toString)
